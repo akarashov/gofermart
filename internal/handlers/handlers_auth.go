@@ -51,8 +51,10 @@ func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "failed to generate token", http.StatusInternalServerError)
 			return
 		}
+		w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Authorization", "Bearer "+token)
 		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(map[string]string{"token": token})
 		return
 	case storage.ErrUserAlreadyExists:
 		http.Error(w, err.Error(), http.StatusConflict)
@@ -89,8 +91,10 @@ func (h *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "failed to generate token", http.StatusInternalServerError)
 			return
 		}
+		w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Authorization", "Bearer "+token)
 		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(map[string]string{"token": token})
 		return
 	case services.ErrWrongPasswordOrLogin:
 		http.Error(w, err.Error(), http.StatusUnauthorized)
