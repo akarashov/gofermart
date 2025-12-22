@@ -31,8 +31,9 @@ func checkPasswordComplexity(password string) bool {
 	hasNumber, _ := regexp.MatchString(`[0-9]`, password)
 	hasUpper, _ := regexp.MatchString(`[A-Z]`, password)
 	hasLower, _ := regexp.MatchString(`[a-z]`, password)
-	hasSpecial, _ := regexp.MatchString(`[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]`, password)
-	return minLenght && maxLenght && hasNumber && hasUpper && hasLower && hasSpecial
+	// hasSpecial, _ := regexp.MatchString(`[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]`, password)
+	return minLenght && maxLenght && hasNumber && hasUpper && hasLower
+	// && hasSpecial
 }
 
 // checkLogin checks if the login meets requirements:
