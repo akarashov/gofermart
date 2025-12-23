@@ -51,19 +51,9 @@ func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "failed to generate token", http.StatusInternalServerError)
 			return
 		}
-		http.SetCookie(w, &http.Cookie{
-			Name:     "jwt",                   // Имя cookie
-			Value:    token,                   // Значение - JWT токен
-			Path:     "/",                     // Доступно для всех путей
-			HttpOnly: true,                    // Защита от XSS атак
-			Secure:   false,                   // Только для HTTPS (используйте false для локальной разработки)
-			SameSite: http.SameSiteStrictMode, // Защита от CSRF атак
-			MaxAge:   86400,                   // Время жизни cookie в секундах (24 часа)
-		})
-		w.Header().Set("Content-Type", "application/json")
+		// w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Authorization", "BEARER "+token)
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(map[string]string{"jwt": token})
 		return
 	case storage.ErrUserAlreadyExists:
 		http.Error(w, err.Error(), http.StatusConflict)
