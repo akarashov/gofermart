@@ -30,7 +30,7 @@ func (h *OrdersHandler) UploadOrder(w http.ResponseWriter, r *http.Request) {
 	}
 	token, claims, err := jwtauth.FromContext(r.Context())
 	if token == nil || claims == nil || err != nil {
-		http.Error(w, "unauthorized", http.StatusTeapot) // - `418` — пользователь не аутентифицирован;
+		http.Error(w, "unauthorized", http.StatusUnauthorized) // - `401` — пользователь не аутентифицирован;
 		return
 	}
 	userID := claims["sub"].(string)
