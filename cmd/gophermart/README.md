@@ -19,7 +19,7 @@ curl -v -X GET http://127.0.0.1:8081/api/orders/4111111111111111
 #### **Регистрация пользователя**
 curl -v -X POST http://127.0.0.1:8080/api/user/register \
 -H 'Content-Type: application/json' \
--d '{"login":"user001","password":"P@ssword001"}'
+-d '{"login":"user002","password":"P@ssword002"}'
 
 
 #### **Аутентификация пользователя**
