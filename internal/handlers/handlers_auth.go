@@ -51,15 +51,8 @@ func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "failed to generate token", http.StatusInternalServerError)
 			return
 		}
-		cookie := &http.Cookie{
-			Name:     "Authorization",
-			Value:    "BEARER " + token,
-			Path:     "/",
-			HttpOnly: true,
-			Secure:   r.TLS != nil,
-			SameSite: http.SameSiteStrictMode,
-		}
-		http.SetCookie(w, cookie)
+		// w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Authorization", "BEARER "+token)
 		w.WriteHeader(http.StatusOK)
 		return
 	case storage.ErrUserAlreadyExists:
@@ -97,16 +90,11 @@ func (h *AuthHandler) Login(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "failed to generate token", http.StatusInternalServerError)
 			return
 		}
-		cookie := &http.Cookie{
-			Name:     "Authorization",
-			Value:    "BEARER " + token,
-			Path:     "/",
-			HttpOnly: true,
-			Secure:   r.TLS != nil,
-			SameSite: http.SameSiteStrictMode,
-		}
-		http.SetCookie(w, cookie)
+		w.Header().Set("Content-Type", "application/json")
+
+		w.Header().Set("Authorization", "BEARER "+token)
 		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(map[string]string{"jwt": token})
 		return
 	case services.ErrWrongPasswordOrLogin:
 		http.Error(w, err.Error(), http.StatusUnauthorized)
