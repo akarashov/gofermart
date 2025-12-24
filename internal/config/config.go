@@ -40,7 +40,8 @@ func LoadFromEnv() *Config {
 func LoadFromFlags() *Config {
 	config := &Config{}
 	flag.StringVar(&config.RunAdress, "a", ":8080", "Run address")
-	flag.StringVar(&config.DatabaseURI, "d", "postgres://admin:admin@192.168.0.20:5432/demo?search_path=gofermart&sslmode=disable", "Data Base DSN")
+	// flag.StringVar(&config.DatabaseURI, "d", "postgres://admin:admin@192.168.0.20:5432/demo?search_path=gofermart&sslmode=disable", "Data Base DSN")
+	flag.StringVar(&config.DatabaseURI, "d", "postgres://gofermart:gofermart@127.0.0.1:5432/gofermart?&sslmode=disable", "Data Base DSN")
 	flag.StringVar(&config.AccrualSystemAddress, "r", "http://127.0.0.1:8081", "Accrual System Address")
 	flag.StringVar(&config.JWTSecret, "s", "supersecret", "JWT Secret")
 	flag.Int64Var(&config.JWTExpireHours, "e", 72, "JWT Expire Hours")

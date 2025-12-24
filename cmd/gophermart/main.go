@@ -21,6 +21,7 @@ func main() {
 	if err != nil {
 		log.Fatal("Failed to connect to database:", err)
 	}
+	log.Printf("Connect database at %s", cfg.DatabaseURI)
 	defer store.Close()
 
 	// Start HTTP server
