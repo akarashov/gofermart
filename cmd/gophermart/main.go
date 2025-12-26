@@ -17,9 +17,9 @@ import (
 func main() {
 	cfg := config.Load()
 	log.Printf("Get config exp_token=%d, sec_token=%s, wrk=%d\n", cfg.JWTExpireHours, cfg.JWTSecret, cfg.Worker)
-	cfg.JWTSecret = "secret"
-	cfg.JWTExpireHours = 72
-	cfg.Worker = 3
+	// cfg.JWTSecret = "secret"
+	// cfg.JWTExpireHours = 72
+	// cfg.Worker = 3
 	store, err := storage.NewPostgresStorage(cfg.DatabaseURI)
 	if err != nil {
 		log.Fatal("Failed to connect to database:", err)

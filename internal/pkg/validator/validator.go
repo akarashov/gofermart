@@ -1,27 +1,31 @@
 package validator
 
+import (
+	"strings"
+	"unicode"
+)
+
 // ValidateLuhn checks if the provided string passes the Luhn algorithm.
 // It ignores spaces and dashes, and returns true if the string is valid.
-func ValidateLuhn(s string) bool {
-	var sum int
-	var alt bool
-	for i := len(s) - 1; i >= 0; i-- {
-		char := s[i]
-		if char == ' ' || char == '-' {
-			continue
+func ValidateLuhn(input string) bool {
+	input = strings.ReplaceAll(input, " ", "")
+	if len(input) <= 1 {
+		return false
+	}
+	sum := 0
+	for i := len(input) - 1; i >= 0; i-- {
+		digitChar := input[i]
+		if !unicode.IsDigit(rune(digitChar)) {
+			return false // Input must contain only digits
 		}
-		if char < '0' || char > '9' {
-			return false
-		}
-		digit := int(char - '0')
-		if alt {
+		digit := int(digitChar - '0')
+		if (len(input)-1-i)%2 == 1 {
 			digit *= 2
 			if digit > 9 {
 				digit -= 9
 			}
 		}
 		sum += digit
-		alt = !alt
 	}
-	return sum%10 == 0 && !alt
+	return sum%10 == 0
 }
