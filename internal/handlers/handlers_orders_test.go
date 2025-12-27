@@ -10,7 +10,6 @@ import (
 	"time"
 
 	"github.com/go-chi/jwtauth"
-	"github.com/shopspring/decimal"
 
 	"github.com/akarashov/gofermart/internal/models"
 	"github.com/akarashov/gofermart/internal/services"
@@ -58,7 +57,7 @@ func TestGetUserOrdersHandler(t *testing.T) {
 	}{
 		{"NoAuth", httptest.NewRequest(http.MethodGet, "/", nil), nil, nil, http.StatusUnauthorized, ""},
 		{"NoOrders", makeReqWithToken(), nil, services.ErrNoOrdersForUser, http.StatusNoContent, ""},
-		{"Success", makeReqWithToken(), []models.OrderResponse{{Number: "79927398713", Status: models.OrderStatusNew, Accrual: decimal.NewFromInt(0), UploadedAt: time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC)}}, nil, http.StatusOK, "79927398713"},
+		{"Success", makeReqWithToken(), []models.OrderResponse{{Number: "79927398713", Status: models.OrderStatusNew, Accrual: float32(0), UploadedAt: time.Date(2020, 1, 1, 0, 0, 0, 0, time.UTC)}}, nil, http.StatusOK, "79927398713"},
 		{"InternalError", makeReqWithToken(), nil, errors.New("boom"), http.StatusInternalServerError, ""},
 	}
 

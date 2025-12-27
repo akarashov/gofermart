@@ -71,7 +71,7 @@ func TestAuthHandler_Register(t *testing.T) {
 		wantHeader     string
 		wantBodySubstr string
 	}{
-		{"success", "application/json", goodUser, nil, "token123", nil, http.StatusOK, "Bearer token123", ""},
+		{"success", "application/json", goodUser, nil, "token123", nil, http.StatusOK, "BEARER token123", ""},
 		{"user_exists", "application/json", goodUser, storage.ErrUserAlreadyExists, "", nil, http.StatusConflict, "", "user already exists"},
 		{"invalid_content_type", "text/plain", `not json`, nil, "", nil, http.StatusBadRequest, "", "Content-Type must be application/json"},
 		{"invalid_json", "application/json", `{"`, nil, "", nil, http.StatusBadRequest, "", "unexpected end"},
@@ -137,7 +137,7 @@ func TestAuthHandler_Login(t *testing.T) {
 		wantHeader     string
 		wantBodySubstr string
 	}{
-		{"success", "application/json", goodLogin, nil, "token123", nil, http.StatusOK, "Bearer token123", ""},
+		{"success", "application/json", goodLogin, nil, "token123", nil, http.StatusOK, "BEARER token123", ""},
 		{"invalid_content_type", "text/plain", `not json`, nil, "", nil, http.StatusBadRequest, "", "Content-Type must be application/json"},
 		{"invalid_json", "application/json", `{"`, nil, "", nil, http.StatusBadRequest, "", "unexpected end"},
 		{"wrong_credentials", "application/json", goodLogin, services.ErrWrongPasswordOrLogin, "", nil, http.StatusUnauthorized, "", "wrong password or login"},
