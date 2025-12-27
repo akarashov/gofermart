@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"errors"
+	"strconv"
 
 	"github.com/akarashov/gofermart/internal/models"
 	"github.com/shopspring/decimal"
@@ -49,4 +50,17 @@ func parseDecimal(accrual sql.NullString) (decimal.Decimal, error) {
 		return d, nil
 	}
 	return decimal.Zero, nil
+}
+
+// parseDecimal - helper function to parse sql.NullString to float32
+// returns float32 if NullString is not valid
+func parseFloat(accrual sql.NullString) (float32, error) {
+	if accrual.Valid {
+		f64, err := strconv.ParseFloat(accrual.String, 32)
+		if err != nil {
+			return 0.0, err
+		}
+		return float32(f64), nil
+	}
+	return 0.0, nil
 }

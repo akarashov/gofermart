@@ -39,10 +39,10 @@ type OrderUploadRequest struct {
 
 // OrderResponse ответ при запросе списка заказов
 type OrderResponse struct {
-	Number     string          `json:"order_number"`
-	Status     OrderStatus     `json:"order_status"`
-	Accrual    decimal.Decimal `json:"accrual,omitzero"`
-	UploadedAt time.Time       `json:"uploaded_at"`
+	Number     string      `json:"order_number"`
+	Status     OrderStatus `json:"order_status"`
+	Accrual    float32     `json:"accrual,omitempty"`
+	UploadedAt time.Time   `json:"uploaded_at"`
 }
 
 // OrderUpdate обновление заказа

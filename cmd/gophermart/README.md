@@ -26,7 +26,7 @@ curl -v -X POST http://127.0.0.1:8080/api/user/register \
 curl -s -D - -o /dev/null \
 -X POST http://127.0.0.1:8080/api/user/login \
 -H 'Content-Type: application/json' \
--d '{"login":"user001","password":"P@ssword001"}' \
+-d '{"login":"user002","password":"P@ssword002"}' \
 | awk '/thorization/ {print $3}' | tr -d '\r' > token.txt
 
 

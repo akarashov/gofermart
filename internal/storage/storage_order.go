@@ -126,7 +126,7 @@ func (p *PostgresStorage) GetOrdersByUser(ctx context.Context, userID string) ([
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan order: %w", err)
 		}
-		d, err := parseDecimal(accrualStr)
+		d, err := parseFloat(accrualStr)
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse accrual: %w", err)
 		}
