@@ -19,21 +19,16 @@ func (p *PostgresStorage) BalanceRepository() BalanceRepository {
 // Get balance a specific user
 // Sums up current and withdrawn from balance table for specific user
 func (p *PostgresStorage) GetBalance(ctx context.Context, userID string) (models.BalanceResponse, error) {
-	query := `SELECT sum(current), sum(withdrawn) FROM balance WHERE user_id = $1 GROUP BY user_id`
+	query := `SELECT current, withdrawn FROM balance WHERE user_id = $1`
 	var balance models.BalanceResponse
 	var currentStr sql.NullString
 	var withdrawnStr sql.NullString
-	err := p.db.QueryRowContext(
-		ctx,
-		query,
-		userID).Scan(
-		&currentStr,
-		&withdrawnStr)
+	err := p.db.QueryRowContext(ctx, query, userID).Scan(&currentStr, &withdrawnStr)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return balance, errors.New("balance not found")
 		}
-		return balance, fmt.Errorf("failed to get balance by user: %w", err)
+		return balance, fmt.Errorf("failed to get user by login: %w", err)
 	}
 	d, err := parseFloat(currentStr)
 	if err != nil {
