@@ -35,12 +35,12 @@ func (p *PostgresStorage) GetBalance(ctx context.Context, userID string) (models
 		}
 		return balance, fmt.Errorf("failed to get balance by user: %w", err)
 	}
-	d, err := parseDecimal(currentStr)
+	d, err := parseFloat(currentStr)
 	if err != nil {
 		return balance, fmt.Errorf("failed to parse current: %w", err)
 	}
 	balance.Current = d
-	d, err = parseDecimal(withdrawnStr)
+	d, err = parseFloat(withdrawnStr)
 	if err != nil {
 		return balance, fmt.Errorf("failed to parse withdraw: %w", err)
 	}
