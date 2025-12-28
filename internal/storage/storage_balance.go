@@ -44,7 +44,7 @@ func (p *PostgresStorage) GetBalance(ctx context.Context, userID string) (models
 
 // Withdraw - withdraw specific sum for specific user and order
 // Uses withdraw stored procedure
-func (p *PostgresStorage) Withdraw(ctx context.Context, userID string, order string, sum string) error {
+func (p *PostgresStorage) Withdraw(ctx context.Context, userID string, order string, sum float32) error {
 	query := `SELECT * FROM withdraw($1, $2, $3);`
 	_, err := p.db.ExecContext(ctx, query, userID, order, sum)
 	if err != nil {
@@ -91,10 +91,9 @@ func (p *PostgresStorage) GetWithdrawals(ctx context.Context, userID string) ([]
 }
 
 // AddAccrual - add accrual amount to specific user's balance
-// Inserts a new row into balance table with the accrual amount
 // Assumes that the user already has a balance record
 func (p *PostgresStorage) AddAccrual(ctx context.Context, userID string, amount float32) error {
-	log.Printf("Adding accrual of %f to user %s", amount, userID)
+	log.Printf("Adding accrual to DB of %f to user %s", amount, userID)
 	tx, err := p.db.BeginTx(ctx, nil)
 	if err != nil {
 		return fmt.Errorf("failed to begin transaction: %w", err)

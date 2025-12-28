@@ -16,5 +16,5 @@ type WithdrawalResponse struct {
 // WithdrawalRequest - Запрос на списание средств
 type WithdrawalRequest struct {
 	Order string `json:"order"`
-	Sum   string `json:"sum"`
+	Sum   float32 `json:"sum"`
 }

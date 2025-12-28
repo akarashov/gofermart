@@ -19,7 +19,7 @@ var (
 
 type BalanceRepository interface {
 	GetBalance(ctx context.Context, userID string) (models.BalanceResponse, error)
-	Withdraw(ctx context.Context, userID string, order string, sum string) error
+	Withdraw(ctx context.Context, userID string, order string, sum float32) error
 	GetWithdrawals(ctx context.Context, userID string) ([]models.WithdrawalResponse, error)
 	AddAccrual(ctx context.Context, userID string, amount float32) error
 }

@@ -32,7 +32,7 @@ func (s *balanceService) GetBalance(ctx context.Context, userID string) (models.
 // Withdraw - withdraw specific sum for specific user and order
 // Validates order number using Luhn algorithm
 // Returns ErrInsufficientFunds if not enough funds
-func (s *balanceService) Withdraw(ctx context.Context, userID string, order string, sum string) error {
+func (s *balanceService) Withdraw(ctx context.Context, userID string, order string, sum float32) error {
 	if !validator.ValidateLuhn(order) {
 		return ErrInvalidOrderNumber
 	}

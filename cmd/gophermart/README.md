@@ -9,10 +9,20 @@
 #### Accrual start
 ./projects/gofermart/cmd/accrual/accrual_darwin_amd64 \
 -a ":8081" \
--d "postgres://admin:admin@192.168.0.20:5432/demo?search_path=gofermart&sslmode=disable"
+-d "postgres://accrual:accrual@127.0.0.1:5432/accrual?sslmode=disable"
+
+#### Accrual registers new mechanics in accrual service
+curl -v -X POST http://127.0.0.1:8081/api/goods \
+-H 'Content-Type: application/json' \
+-d '{"match": "XXXXXXXXXXX","reward": 5,"reward_type": "%"}'
+
+#### Accrual register new order
+curl -v -X POST http://127.0.0.1:8081/api/orders \
+-H 'Content-Type: application/json' \
+-d '{"order": "717413","goods": [{"description": "Стиральная машинка LG","price": 47399.99},{"description": "Телевизор XXXXXXXXXXX","price": 14599.50}]}'
 
 #### Accrual get
-curl -v -X GET http://127.0.0.1:8081/api/orders/4111111111111111
+curl -v -X GET http://127.0.0.1:8081/api/orders/717413
 
 
 
@@ -62,7 +72,7 @@ curl -v -X GET  http://127.0.0.1:8080/api/user/balance \
 curl -v -X POST http://127.0.0.1:8080/api/user/balance/withdraw \
 -H "Authorization: Bearer $(cat token.txt)" \
 -H 'Content-Type: application/json' \
--d '{"order":"5555555555554444","sum":333}'
+-d '{"order":"717413","sum":33.355}'
 
 # TODO
 Поправить в запросе число, а json ждет строку

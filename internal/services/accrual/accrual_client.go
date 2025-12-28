@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 
@@ -34,6 +35,7 @@ func NewClient(baseURL string) *Client {
 	}
 }
 
+// Get order info from accrual with retry and rate limit (svc)
 func (c *Client) GetOrderInfo(ctx context.Context, orderNumber string) (*models.AccrualResponse, error) {
 	url := fmt.Sprintf("%s/api/orders/%s", c.baseURL, orderNumber)
 	var resp *models.AccrualResponse
@@ -50,11 +52,11 @@ func (c *Client) GetOrderInfo(ctx context.Context, orderNumber string) (*models.
 		default:
 			return nil, err
 		}
-
 	}
 	return nil, fmt.Errorf("failed after %d retries: %w", c.maxRetries, err)
 }
 
+// HTTP Request to accrual service (repos)
 func (c *Client) doRequest(ctx context.Context, url string) (*models.AccrualResponse, error) {
 	req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
 	if err != nil {
@@ -62,6 +64,7 @@ func (c *Client) doRequest(ctx context.Context, url string) (*models.AccrualResp
 	}
 	req.Header.Set("Content-Type", "application/json")
 	resp, err := c.httpClient.Do(req)
+	log.Printf("Get order data from accrual for new/processing orders %s\n", url)
 	if err != nil {
 		return nil, err
 	}
