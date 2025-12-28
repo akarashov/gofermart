@@ -8,7 +8,6 @@ import (
 
 	"github.com/akarashov/gofermart/internal/models"
 	"github.com/akarashov/gofermart/internal/storage"
-	"github.com/shopspring/decimal"
 )
 
 type Processor struct {
@@ -85,12 +84,12 @@ func (p *Processor) processOrder(ctx context.Context, order models.OrdersForProc
 	if err := p.orderRepo.UpdateOrder(ctx, updateReq); err != nil {
 		return fmt.Errorf("failed to update order: %w", err)
 	}
-	if accrualResp.Status == models.MapAccrualToInternalStatus(models.AccrualStatusProcessing) && accrualResp.Accrual.GreaterThan(decimal.Zero) {
+	if accrualResp.Status == models.MapAccrualToInternalStatus(models.AccrualStatusProcessing) && accrualResp.Accrual > 0 {
 		if err := p.balanceRepo.AddAccrual(ctx, order.UserID, accrualResp.Accrual); err != nil {
 			return fmt.Errorf("failed to add accrual to balance: %w", err)
 		}
 	}
-	log.Printf("Order %s updated to status %s with accrual %d",
+	log.Printf("Order %s updated to status %s with accrual %f",
 		order.Number, accrualResp.Status, accrualResp.Accrual)
 	return nil
 }

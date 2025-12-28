@@ -1,11 +1,9 @@
 package models
 
-import "github.com/shopspring/decimal"
-
 type AccrualResponse struct {
-	Number  string          `json:"order"`             
-	Status  string          `json:"status"`            
-	Accrual decimal.Decimal `json:"accrual,omitempty"` 
+	Number  string  `json:"order"`
+	Status  string  `json:"status"`
+	Accrual float32 `json:"accrual,omitempty"`
 }
 
 const (

@@ -9,7 +9,6 @@ import (
 
 	"github.com/akarashov/gofermart/internal/models"
 	"github.com/jackc/pgx/v5/pgconn"
-	"github.com/shopspring/decimal"
 )
 
 func (p *PostgresStorage) BalanceRepository() BalanceRepository {
@@ -94,8 +93,8 @@ func (p *PostgresStorage) GetWithdrawals(ctx context.Context, userID string) ([]
 // AddAccrual - add accrual amount to specific user's balance
 // Inserts a new row into balance table with the accrual amount
 // Assumes that the user already has a balance record
-func (p *PostgresStorage) AddAccrual(ctx context.Context, userID string, amount decimal.Decimal) error {
-	log.Printf("Adding accrual of %s to user %s", amount.String(), userID)
+func (p *PostgresStorage) AddAccrual(ctx context.Context, userID string, amount float32) error {
+	log.Printf("Adding accrual of %f to user %s", amount, userID)
 	tx, err := p.db.BeginTx(ctx, nil)
 	if err != nil {
 		return fmt.Errorf("failed to begin transaction: %w", err)
@@ -106,7 +105,7 @@ func (p *PostgresStorage) AddAccrual(ctx context.Context, userID string, amount 
 		}
 	}()
 	query := `UPDATE balance SET current=$1 WHERE user_id = $2`
-	_, err = tx.ExecContext(ctx, query, amount.String(), userID)
+	_, err = tx.ExecContext(ctx, query, amount, userID)
 	if err != nil {
 		return fmt.Errorf("failed to update balance: %w", err)
 	}

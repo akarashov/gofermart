@@ -49,7 +49,7 @@ type OrderResponse struct {
 type OrderUpdate struct {
 	Number  string          `db:"order_number"`
 	Status  string          `db:"order_status"`
-	Accrual decimal.Decimal `db:"accrual,omitempty"`
+	Accrual float32			`db:"accrual,omitempty"`
 }
 
 type OrdersForProcessing struct {

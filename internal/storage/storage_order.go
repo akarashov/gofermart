@@ -167,11 +167,12 @@ func (p *PostgresStorage) GetOrdersForProcessing(ctx context.Context, limit int)
 	return orders, nil
 }
 
+// Update order from accrual
 func (p *PostgresStorage) UpdateOrder(ctx context.Context, updateReq models.OrderUpdate) error {
-	log.Printf("Updating order %s to status %s with accrual %s",
+	log.Printf("Updating order %s to status %s with accrual %f",
 		updateReq.Number,
 		updateReq.Status,
-		updateReq.Accrual.String())
+		updateReq.Accrual)
 	tx, err := p.db.BeginTx(ctx, nil)
 	if err != nil {
 		return fmt.Errorf("failed to begin transaction: %w", err)
@@ -182,7 +183,7 @@ func (p *PostgresStorage) UpdateOrder(ctx context.Context, updateReq models.Orde
 		}
 	}()
 	query := `UPDATE orders SET order_status = $1, accrual = $2 WHERE order_number = $3`
-	_, err = tx.ExecContext(ctx, query, updateReq.Status, updateReq.Accrual.String(), updateReq.Number)
+	_, err = tx.ExecContext(ctx, query, updateReq.Status, updateReq.Accrual, updateReq.Number)
 	if err != nil {
 		return fmt.Errorf("failed to update orders: %w", err)
 	}
