@@ -76,12 +76,13 @@ func (p *Processor) processOrder(ctx context.Context, order models.OrdersForProc
 	if accrualResp == nil {
 		return nil
 	}
+	statusForOrder := models.MapAccrualToInternalStatus(accrualResp.Status)
 	updateReq := models.OrderUpdate{
 		Number:  order.Number,
-		Status:  accrualResp.Status,
+		Status:  statusForOrder,
 		Accrual: accrualResp.Accrual,
 	}
-	log.Printf("Got %s status, for user %s with accrual %f", accrualResp.Status, order.UserID, accrualResp.Accrual)
+	log.Printf("Got %s status, for user %s with accrual %f", statusForOrder, order.UserID, accrualResp.Accrual)
 	if err := p.orderRepo.UpdateOrder(ctx, updateReq); err != nil {
 		return fmt.Errorf("failed to update order: %w", err)
 	}

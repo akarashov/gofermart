@@ -77,7 +77,7 @@ func (p *PostgresStorage) GetWithdrawals(ctx context.Context, userID string) ([]
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan withdrawal: %w", err)
 		}
-		d, err := parseDecimal(withdrawnStr)
+		d, err := parseFloat(withdrawnStr)
 		if err != nil {
 			return nil, fmt.Errorf("failed to parse withdrawn: %w", err)
 		}
