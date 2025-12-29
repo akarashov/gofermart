@@ -30,7 +30,7 @@ func NewProcessor(
 		orderRepo:     orderRepo,
 		balanceRepo:   balanceRepo,
 		batchSize:     10,
-		pollInterval:  5 * time.Second,
+		pollInterval:  1 * time.Second,
 	}
 }
 

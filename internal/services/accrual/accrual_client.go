@@ -28,10 +28,10 @@ func NewClient(baseURL string) *Client {
 	return &Client{
 		baseURL: baseURL,
 		httpClient: &http.Client{
-			Timeout: 60 * time.Second,
+			Timeout: 20 * time.Second,
 		},
-		retryDelay: 5 * time.Second,
-		maxRetries: 10,
+		retryDelay: 1 * time.Second,
+		maxRetries: 20,
 	}
 }
 
