@@ -29,12 +29,12 @@ func NewAuthService(userRepo storage.UserRepository) AuthService {
 func checkPasswordComplexity(password string) bool {
 	minLenght := len(password) >= 8
 	maxLenght := len(password) <= 64
-	hasNumber, _ := regexp.MatchString(`[0-9]`, password)
+	// hasNumber, _ := regexp.MatchString(`[0-9]`, password)
 	hasUpper, _ := regexp.MatchString(`[A-Z]`, password)
 	hasLower, _ := regexp.MatchString(`[a-z]`, password)
 	// hasSpecial, _ := regexp.MatchString(`[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]`, password)
-	return minLenght && maxLenght && hasNumber && hasUpper && hasLower
-	// && hasSpecial
+	return minLenght && maxLenght  && hasUpper && hasLower
+	// && hasSpecial && hasNumber
 }
 
 // checkLogin checks if the login meets requirements:
