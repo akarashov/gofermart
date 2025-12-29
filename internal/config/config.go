@@ -29,11 +29,11 @@ func Load() *Config {
 func Default() *Config {
 	config := &Config{}
 	config.RunAdress = ":8080"
-	config.DatabaseURI = "postgres://gofermart:gofermart@127.0.0.1:5432/gofermart?&sslmode=disable" //  "postgres://admin:admin@192.168.0.20:5432/demo?search_path=gofermart&sslmode=disable"
-	config.AccrualSystemAddress = "http://127.0.0.1:8081"
-	config.JWTSecret = "secret"
-	config.JWTExpireHours = 74
-	config.Worker = 6
+	config.DatabaseURI = "postgres://gofermart:gofermart@localhost:5432/gofermart?&sslmode=disable"
+	config.AccrualSystemAddress = "http://localhost:8081"
+	config.JWTSecret = "superSecret"
+	config.JWTExpireHours = 96
+	config.Worker = 3
 	return config
 }
 

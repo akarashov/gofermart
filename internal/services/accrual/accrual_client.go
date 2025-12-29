@@ -28,10 +28,10 @@ func NewClient(baseURL string) *Client {
 	return &Client{
 		baseURL: baseURL,
 		httpClient: &http.Client{
-			Timeout: 10 * time.Second,
+			Timeout: 60 * time.Second,
 		},
-		retryDelay: 1 * time.Second,
-		maxRetries: 3,
+		retryDelay: 5 * time.Second,
+		maxRetries: 10,
 	}
 }
 
@@ -46,10 +46,13 @@ func (c *Client) GetOrderInfo(ctx context.Context, orderNumber string) (*models.
 		case nil:
 			return resp, nil
 		case ErrRateLimites:
+			log.Println("Rate limited, retry")
 			time.Sleep(c.retryDelay * time.Duration(i+1))
 		case ErrServerError:
+			log.Println("Accrual server error")
 			return nil, err
 		default:
+			log.Println("Accrual unknown error")
 			return nil, err
 		}
 	}
@@ -64,7 +67,7 @@ func (c *Client) doRequest(ctx context.Context, url string) (*models.AccrualResp
 	}
 	req.Header.Set("Content-Type", "application/json")
 	resp, err := c.httpClient.Do(req)
-	log.Printf("Get order data from accrual for new/processing orders %s\n", url)
+	// log.Printf("Get order data from accrual for new/processing orders %s\n", url)
 	if err != nil {
 		return nil, err
 	}
