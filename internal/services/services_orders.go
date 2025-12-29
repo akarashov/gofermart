@@ -13,6 +13,7 @@ type orderService struct {
 	orderRepo storage.OrderRepository
 }
 
+// Create an instance of order
 func NewOrderService(orderRepo storage.OrderRepository) OrderService {
 	return &orderService{
 		orderRepo: orderRepo,

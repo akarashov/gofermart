@@ -10,6 +10,7 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
+// Create an instance of user stor
 func (p *PostgresStorage) UserRepository() UserRepository {
 	return p
 }

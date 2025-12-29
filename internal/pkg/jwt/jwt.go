@@ -6,6 +6,7 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
+// Javascript web token interface
 type Manager interface {
 	Generate(userID string) (string, error)
 	Verify(tokenStr string) (*jwt.RegisteredClaims, error)
@@ -16,6 +17,7 @@ type jwtManager struct {
 	tokenDuration time.Duration
 }
 
+// Create an instance of JWT
 func NewJWTManager(secretKey string, tokenDuration time.Duration) Manager {
 	return &jwtManager{secretKey, tokenDuration}
 }

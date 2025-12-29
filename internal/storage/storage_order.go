@@ -11,6 +11,7 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
+// Create an instance of order stor
 func (p *PostgresStorage) OrderRepository() OrderRepository {
 	return p
 }

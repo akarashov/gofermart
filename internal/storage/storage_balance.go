@@ -11,6 +11,7 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
+// Create an instance of balance stor
 func (p *PostgresStorage) BalanceRepository() BalanceRepository {
 	return p
 }

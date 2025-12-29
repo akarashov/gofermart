@@ -13,6 +13,7 @@ type balanceService struct {
 	balanceRepo storage.BalanceRepository
 }
 
+// Create an instance of balance
 func NewBalanceService(balanceRepo storage.BalanceRepository) BalanceService {
 	return &balanceService{
 		balanceRepo: balanceRepo,

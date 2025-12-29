@@ -10,10 +10,12 @@ import (
 	"github.com/go-chi/jwtauth"
 )
 
+// Base order struct
 type OrdersHandler struct {
 	orderService services.OrderService
 }
 
+// Create an instance of order
 func NewOrdersHandler(orderService services.OrderService) *OrdersHandler {
 	return &OrdersHandler{
 		orderService: orderService,

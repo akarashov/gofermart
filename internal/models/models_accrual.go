@@ -1,5 +1,6 @@
 package models
 
+// Base response from accrual
 type AccrualResponse struct {
 	Number  string  `json:"order"`
 	Status  string  `json:"status"`
@@ -13,6 +14,7 @@ const (
 	AccrualStatusInvalid    = "INVALID"
 )
 
+// Accrual status to order status map
 func MapAccrualToInternalStatus(accrualStatus string) string {
 	switch accrualStatus {
 	case AccrualStatusRegistered, AccrualStatusProcessing:

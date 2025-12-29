@@ -11,6 +11,7 @@ import (
 	"github.com/akarashov/gofermart/internal/storage"
 )
 
+// Basic auth struct
 type AuthHandler struct {
 	authService services.AuthService
 	jwtManager  jwt.Manager
@@ -51,7 +52,6 @@ func (h *AuthHandler) Register(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "failed to generate token", http.StatusInternalServerError)
 			return
 		}
-		// w.Header().Set("Content-Type", "application/json")
 		w.Header().Set("Authorization", "BEARER "+token)
 		w.WriteHeader(http.StatusOK)
 		return

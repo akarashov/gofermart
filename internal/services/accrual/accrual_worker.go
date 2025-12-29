@@ -8,6 +8,7 @@ import (
 	"github.com/akarashov/gofermart/internal/storage"
 )
 
+// Struct of accrual worker proccessing
 type Worker struct {
 	processors []*Processor
 	wg         sync.WaitGroup
@@ -22,7 +23,7 @@ func NewWorker(
 	workerCount int,
 ) *Worker {
 	worker := &Worker{}
-	for i := 0; i < workerCount; i++ {
+	for range workerCount {
 		processor := NewProcessor(accrualClient, orderRepo, balanceRepo)
 		worker.processors = append(worker.processors, processor)
 	}

@@ -10,10 +10,12 @@ import (
 	"github.com/go-chi/jwtauth"
 )
 
+// Master balance struct
 type BalanceHandler struct {
 	balanceService services.BalanceService
 }
 
+// Create an instance of balance
 func NewBalanceHandler(balanceService services.BalanceService) *BalanceHandler {
 	return &BalanceHandler{
 		balanceService: balanceService,
@@ -56,7 +58,6 @@ func (h *BalanceHandler) Withdraw(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	userID := claims["sub"].(string)
-
 	var withdrawRequest models.WithdrawalRequest
 	var buf bytes.Buffer
 	if r.Header.Get("Content-Type") != "application/json" {
@@ -92,7 +93,7 @@ func (h *BalanceHandler) Withdraw(w http.ResponseWriter, r *http.Request) {
 // GetWithdrawals retrieves all withdrawals for the authenticated user.
 // Returns appropriate HTTP status codes based on the outcome.
 func (h *BalanceHandler) GetWithdrawals(w http.ResponseWriter, r *http.Request) {
-		token, claims, err := jwtauth.FromContext(r.Context())
+	token, claims, err := jwtauth.FromContext(r.Context())
 	if token == nil || claims == nil || err != nil {
 		http.Error(w, "unauthorized", http.StatusUnauthorized) // - `401` — пользователь не аутентифицирован;
 		return

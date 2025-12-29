@@ -17,6 +17,7 @@ var (
 	ErrInsufficientFunds  = errors.New("insufficient funds")
 )
 
+// Balance stor interface
 type BalanceRepository interface {
 	GetBalance(ctx context.Context, userID string) (models.BalanceResponse, error)
 	Withdraw(ctx context.Context, userID string, order string, sum float32) error
@@ -24,6 +25,7 @@ type BalanceRepository interface {
 	AddAccrual(ctx context.Context, userID string, amount float32) error
 }
 
+// Order stor interface
 type OrderRepository interface {
 	GetOrderByNumber(ctx context.Context, userID string, orderNumber string) (models.Order, error)
 	GetOrderByNumberAnyUser(ctx context.Context, orderNumber string) (models.Order, error)
@@ -33,6 +35,7 @@ type OrderRepository interface {
 	UpdateOrder(ctx context.Context, updateReq models.OrderUpdate) error
 }
 
+// User stor interface
 type UserRepository interface {
 	CreateUser(ctx context.Context, user *models.User) (string, error)
 	GetUserByLogin(ctx context.Context, login string) (*models.User, error)

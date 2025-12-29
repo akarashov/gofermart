@@ -11,6 +11,7 @@ import (
 	_ "github.com/jackc/pgx/v5/stdlib"
 )
 
+// Create an instance of PG stor
 type PostgresStorage struct {
 	db *sql.DB
 }

@@ -7,6 +7,7 @@ import (
 	"github.com/caarlos0/env/v11"
 )
 
+// Master config stuct
 type Config struct {
 	RunAdress            string `env:"RUN_ADDRESS"`
 	DatabaseURI          string `env:"DATABASE_URI"`
@@ -16,7 +17,7 @@ type Config struct {
 	Worker               int    `env:"WORKER_COUNT"`
 }
 
-// Load loads the configuration from environment variables or command-line flags.
+// loads the configuration from environment variables or command-line flags or use defaults
 func Load() *Config {
 	config := Default()
 	LoadFromEnv(config)

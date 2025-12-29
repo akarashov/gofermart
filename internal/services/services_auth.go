@@ -15,6 +15,7 @@ type authService struct {
 	hasher   hasher.PasswordHasher
 }
 
+// Create an instance of auth
 func NewAuthService(userRepo storage.UserRepository) AuthService {
 	return &authService{
 		userRepo: userRepo,

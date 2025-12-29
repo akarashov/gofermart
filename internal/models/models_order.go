@@ -7,6 +7,7 @@ import (
 	"github.com/shopspring/decimal"
 )
 
+// Order status
 type OrderStatus string
 
 const (
@@ -22,7 +23,7 @@ var (
 	ErrInvalidWithdrawalSum = errors.New("invalid withdrawal sum")
 )
 
-// Order модель заказа
+// Order struct for create (upload)
 type Order struct {
 	ID         string          `json:"-" db:"id"`
 	UserID     string          `json:"-" db:"user_id"`
@@ -33,11 +34,12 @@ type Order struct {
 	UploadedAt time.Time       `json:"uploaded_at,omitempty" db:"uploaded_at,omitempty"`
 }
 
+// Order request for upload
 type OrderUploadRequest struct {
 	Number string `json:"order_number"`
 }
 
-// OrderResponse ответ при запросе списка заказов
+// Order Response for list of orders request
 type OrderResponse struct {
 	Number     string      `json:"number"`
 	Status     OrderStatus `json:"status"`
@@ -45,13 +47,14 @@ type OrderResponse struct {
 	UploadedAt time.Time   `json:"uploaded_at"`
 }
 
-// OrderUpdate обновление заказа
+// Order update from accrual
 type OrderUpdate struct {
-	Number  string          `db:"order_number"`
-	Status  string          `db:"order_status"`
-	Accrual float32			`db:"accrual,omitempty"`
+	Number  string  `db:"order_number"`
+	Status  string  `db:"order_status"`
+	Accrual float32 `db:"accrual,omitempty"`
 }
 
+// Orders for processing status from accrual (new/processing)
 type OrdersForProcessing struct {
 	UserID string `json:"-" db:"user_id"`
 	Number string `json:"number" db:"order_number"`

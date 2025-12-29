@@ -17,6 +17,7 @@ var (
 	ErrServerError = errors.New("server error")
 )
 
+// Struct of accrual client
 type Client struct {
 	baseURL    string
 	httpClient *http.Client
@@ -24,6 +25,7 @@ type Client struct {
 	maxRetries int
 }
 
+// Create an instance of accrual client
 func NewClient(baseURL string) *Client {
 	return &Client{
 		baseURL: baseURL,
@@ -67,7 +69,6 @@ func (c *Client) doRequest(ctx context.Context, url string) (*models.AccrualResp
 	}
 	req.Header.Set("Content-Type", "application/json")
 	resp, err := c.httpClient.Do(req)
-	// log.Printf("Get order data from accrual for new/processing orders %s\n", url)
 	if err != nil {
 		return nil, err
 	}
