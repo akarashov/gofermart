@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"log"
+	"log/slog"
 	"net/http"
 	"os"
 	"os/signal"
@@ -18,17 +18,19 @@ func main() {
 	cfg := config.Load()
 	store, err := storage.NewPostgresStorage(cfg.DatabaseURI)
 	if err != nil {
-		log.Fatal("Failed to connect to database:", err)
+		slog.Error("failed to connect to database", "err", err)
+		os.Exit(1)
 	}
 	defer store.Close()
 
 	// Start HTTP server
 	router := handlers.NewRouter(cfg, store)
 	go func() {
-		log.Printf("Starting server at %s", cfg.RunAdress)
-		err = http.ListenAndServe(cfg.RunAdress, router)
+		slog.Info("server starting", "run_address", cfg.RunAddress)
+		err = http.ListenAndServe(cfg.RunAddress, router)
 		if err != nil {
-			log.Fatal("Failed to start server: ", err)
+			slog.Error("failed to start server", "err", err)
+			os.Exit(1)
 		}
 	}()
 
@@ -51,10 +53,10 @@ func main() {
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 
 	<-sigChan
-	log.Println("Shutting down worker...")
+	slog.Info("worker shutting down")
 
 	cancel()
 	worker.Stop()
 
-	log.Println("Worker shutdown complete")
+	slog.Info("worker shutdown complete")
 }

@@ -2,14 +2,14 @@ package config
 
 import (
 	"flag"
-	"log"
+	"log/slog"
 
 	"github.com/caarlos0/env/v11"
 )
 
-// Master config stuct
+// Master config struct
 type Config struct {
-	RunAdress            string `env:"RUN_ADDRESS"`
+	RunAddress           string `env:"RUN_ADDRESS"`
 	DatabaseURI          string `env:"DATABASE_URI"`
 	AccrualSystemAddress string `env:"ACCRUAL_SYSTEM_ADDRESS"`
 	JWTSecret            string `env:"JWT_SECRET"`
@@ -29,7 +29,7 @@ func Load() *Config {
 // Load default settings
 func Default() *Config {
 	config := &Config{}
-	config.RunAdress = ":8080"
+	config.RunAddress = ":8080"
 	config.DatabaseURI = "postgres://gofermart:gofermart@localhost:5432/gofermart?&sslmode=disable"
 	config.AccrualSystemAddress = "http://localhost:8081"
 	config.JWTSecret = "superSecret"
@@ -42,13 +42,13 @@ func Default() *Config {
 func LoadFromEnv(config *Config) {
 	err := env.Parse(config)
 	if err != nil {
-		log.Fatal(err)
+		slog.Error("loads configuration from environment variables", "err", err)
 	}
 }
 
 // LoadFromFlags loads configuration from command-line flags.
 func LoadFromFlags(config *Config) {
-	flag.StringVar(&config.RunAdress, "a", config.RunAdress, "Run address")
+	flag.StringVar(&config.RunAddress, "a", config.RunAddress, "Run address")
 	flag.StringVar(&config.DatabaseURI, "d", config.DatabaseURI, "Data Base DSN")
 	flag.StringVar(&config.AccrualSystemAddress, "r", config.AccrualSystemAddress, "Accrual System Address")
 	flag.StringVar(&config.JWTSecret, "s", config.JWTSecret, "JWT Secret")

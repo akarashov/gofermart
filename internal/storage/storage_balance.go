@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"log"
+	"log/slog"
 
 	"github.com/akarashov/gofermart/internal/models"
 	"github.com/jackc/pgx/v5/pgconn"
@@ -94,7 +94,7 @@ func (p *PostgresStorage) GetWithdrawals(ctx context.Context, userID string) ([]
 // AddAccrual - add accrual amount to specific user's balance
 // Assumes that the user already has a balance record
 func (p *PostgresStorage) AddAccrual(ctx context.Context, userID string, amount float32) error {
-	log.Printf("Adding accrual to DB of %f to user %s", amount, userID)
+	slog.Info("adding accrual to DB", "amount", amount, "user_id", userID)
 	tx, err := p.db.BeginTx(ctx, nil)
 	if err != nil {
 		return fmt.Errorf("failed to begin transaction: %w", err)

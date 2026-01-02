@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"log"
+	"log/slog"
 
 	"github.com/akarashov/gofermart/internal/models"
 	"github.com/jackc/pgx/v5/pgconn"
@@ -142,7 +142,6 @@ func (p *PostgresStorage) GetOrdersByUser(ctx context.Context, userID string) ([
 
 // Get orders for accrual processing in status NEW or PROCESSING by limit
 func (p *PostgresStorage) GetOrdersForProcessing(ctx context.Context, limit int) ([]models.OrdersForProcessing, error) {
-	// log.Printf("Getting up to %d orders for processing", limit)
 	query := `SELECT user_id, order_number FROM orders WHERE order_status IN ('NEW', 'PROCESSING') ORDER BY uploaded_at ASC LIMIT $1`
 	var orders []models.OrdersForProcessing
 	rows, err := p.db.QueryContext(ctx, query, limit)
@@ -170,10 +169,10 @@ func (p *PostgresStorage) GetOrdersForProcessing(ctx context.Context, limit int)
 
 // Update order from accrual
 func (p *PostgresStorage) UpdateOrder(ctx context.Context, updateReq models.OrderUpdate) error {
-	log.Printf("Updating order %s to status %s with accrual %f",
-		updateReq.Number,
-		updateReq.Status,
-		updateReq.Accrual)
+	slog.Info("order updating",
+		"number", updateReq.Number,
+		"status", updateReq.Status,
+		"accrual", updateReq.Accrual)
 	tx, err := p.db.BeginTx(ctx, nil)
 	if err != nil {
 		return fmt.Errorf("failed to begin transaction: %w", err)

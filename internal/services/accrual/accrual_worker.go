@@ -2,7 +2,7 @@ package accrual
 
 import (
 	"context"
-	"log"
+	"log/slog"
 	"sync"
 
 	"github.com/akarashov/gofermart/internal/storage"
@@ -40,11 +40,11 @@ func (w *Worker) Start(ctx context.Context) {
 			p.ProcessOrders(ctx)
 		}(processor)
 	}
-	log.Printf("Started %d accrual workers", len(w.processors))
+	slog.Info("accrual workers started", "count", len(w.processors))
 }
 
 // Stop waits for all accrual processors to finish processing.
 func (w *Worker) Stop() {
 	w.wg.Wait()
-	log.Println("All accrual workers stopped")
+	slog.Info("All accrual workers stopped")
 }

@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
+	"log/slog"
 	"net/http"
 	"time"
 
@@ -48,13 +48,13 @@ func (c *Client) GetOrderInfo(ctx context.Context, orderNumber string) (*models.
 		case nil:
 			return resp, nil
 		case ErrRateLimites:
-			log.Println("Rate limited, retry")
+			slog.Error("rate limited, retry")
 			time.Sleep(c.retryDelay * time.Duration(i+1))
 		case ErrServerError:
-			log.Println("Accrual server error")
+			slog.Error("Accrual server error")
 			return nil, err
 		default:
-			log.Println("Accrual unknown error")
+			slog.Error("Accrual unknown error")
 			return nil, err
 		}
 	}
