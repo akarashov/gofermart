@@ -1,0 +1,50 @@
+package accrual
+
+import (
+	"context"
+	"log/slog"
+	"sync"
+
+	"github.com/akarashov/gofermart/internal/storage"
+)
+
+// Struct of accrual worker proccessing
+type Worker struct {
+	processors []*Processor
+	wg         sync.WaitGroup
+}
+
+// NewWorker creates a new Worker instance with the specified number of processors.
+// Each processor is initialized with the provided accrual client and repositories.
+func NewWorker(
+	accrualClient *Client,
+	orderRepo storage.OrderRepository,
+	balanceRepo storage.BalanceRepository,
+	workerCount int,
+) *Worker {
+	worker := &Worker{}
+	for range workerCount {
+		processor := NewProcessor(accrualClient, orderRepo, balanceRepo)
+		worker.processors = append(worker.processors, processor)
+	}
+	return worker
+}
+
+// Start initiates all accrual processors to begin processing orders.
+// It spawns a separate goroutine for each processor and logs the start of the workers.
+func (w *Worker) Start(ctx context.Context) {
+	for _, processor := range w.processors {
+		w.wg.Add(1)
+		go func(p *Processor) {
+			defer w.wg.Done()
+			p.ProcessOrders(ctx)
+		}(processor)
+	}
+	slog.Info("accrual workers started", "count", len(w.processors))
+}
+
+// Stop waits for all accrual processors to finish processing.
+func (w *Worker) Stop() {
+	w.wg.Wait()
+	slog.Info("All accrual workers stopped")
+}
